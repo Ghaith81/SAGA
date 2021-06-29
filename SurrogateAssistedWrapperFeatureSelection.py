@@ -9,7 +9,7 @@ from deap import tools
 
 class SurrogateAssistedWrapperFeatureSelection:
     def SAGA(dataset, populationSize=40, a=16, reductionRate=0.5, step=10, d=10, zeroP=0.5,
-             verbose=False, qualOnly=False, timeout=np.inf, noChange=np.inf, evaluation='validation'):
+             verbose=0, qualOnly=False, timeout=np.inf, noChange=np.inf, evaluation='validation'):
 
         start = time.time()
         logDF = pd.DataFrame(columns=('generation', 'time', 'best_fitness', 'average_fitness', 'number_of_evaluations',
@@ -40,6 +40,7 @@ class SurrogateAssistedWrapperFeatureSelection:
                                                                       population,
                                                                       populationSize=populationSize,
                                                                       maxGenerations=step,
+                                                                      verbose=verbose,
                                                                       task=task)
 
             generationCounter = generationCounter + step
@@ -115,6 +116,7 @@ class SurrogateAssistedWrapperFeatureSelection:
                                                                                   populationSize=populationSize,
                                                                                   maxNochange=noChange,
                                                                                   timeout=timeout-qualTime,
+                                                                                  verbose=verbose,
                                                                                   task=task)
 
                         break
@@ -170,6 +172,7 @@ class SurrogateAssistedWrapperFeatureSelection:
                                                                               populationSize=populationSize,
                                                                               maxNochange=noChange,
                                                                               timeout=timeout - qualTime,
+                                                                              verbose=verbose,
                                                                               task=task)
 
                     break

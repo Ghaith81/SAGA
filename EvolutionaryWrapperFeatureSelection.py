@@ -92,7 +92,7 @@ class EvolutionaryWrapperFeatureSelection:
         return toolbox
 
     def CHC(dataset, population=False, populationSize=40, d=False, divergence=0.35, zeroP=0.5, maxGenerations=np.inf, maxNochange=np.inf, timeout=np.inf,
-            task='feature_selection', evaluation='validation', stop=np.inf):
+            task='feature_selection', evaluation='validation', stop=np.inf, verbose=0):
         start = time.time()
         end = time.time()
 
@@ -199,7 +199,8 @@ class EvolutionaryWrapperFeatureSelection:
 
             # find and print best individual:
             best_index = fitnessValues.index(max(fitnessValues))
-            print("Best Individual = %", np.round(100 * maxFitness, 2), ", Gen = ", generationCounter, '\r', end='')
+            if (verbose):
+                print("Best Individual = %", np.round(100 * maxFitness, 2), ", Gen = ", generationCounter, '\r', end='')
             #print()
             #print(np.round(100*maxFitness, 2), 'number of paired:', numberOfPaired, 'number of mutations:', numberOfMutation, ' d:', d)
             #print()
@@ -213,7 +214,7 @@ class EvolutionaryWrapperFeatureSelection:
 
     def GA(dataset, populationSize=40, crossOverP=0.9, mutationP=0.1, zeroP=0.5, maxGenerations=np.inf, maxNochange=np.inf,
             timeout=np.inf,
-            task='feature_selection', evaluation='validation', stop=np.inf):
+            task='feature_selection', evaluation='validation', stop=np.inf, verbose=0):
 
         start = time.time()
         end = time.time()
@@ -295,7 +296,8 @@ class EvolutionaryWrapperFeatureSelection:
 
             # find and print best individual:
             best_index = fitnessValues.index(max(fitnessValues))
-            print("Best Individual = %", np.round(100 * maxFitness, 2), ", Gen = ", generationCounter, '\r', end='')
+            if (verbose):
+                print("Best Individual = %", np.round(100 * maxFitness, 2), ", Gen = ", generationCounter, '\r', end='')
             # print()
             # print(np.round(100*maxFitness, 2), 'number of paired:', numberOfPaired, 'number of mutations:', numberOfMutation, ' d:', d)
             # print()
