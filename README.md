@@ -8,4 +8,7 @@ Please refer to the Jupyter notebook (Example.ipynb) for an example of using the
 * CHC: The implementation of a CHC algorithm is according to the paper: “The CHC Adaptive Search Algorithm: How to Have Safe Search When Engaging in Nontraditional Genetic Recombination” The default hyper-parameter choices of d equals 0.25 of the chromosome size and divergence of 0.35, with a population size of 40.
 * GA: A classical GA is implemented with 0.9 crossover and 0.1 mutation probabilities. Elitism always migrates the best individual to the next generation population. The population size is also 40 for the GA.
 
+If you face any difficulty with the implementation, please refer to: mohammed_ghaith.altarabichi@hh.se
+
+
 
