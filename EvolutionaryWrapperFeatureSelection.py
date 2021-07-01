@@ -91,16 +91,19 @@ class EvolutionaryWrapperFeatureSelection:
             toolbox.register("evaluate", EvolutionaryWrapperFeatureSelection.evaluate, task=task, evaluation=evaluation, dataset=dataset, alpha=alpha)
         return toolbox
 
-    def CHC(dataset, population=False, populationSize=40, d=False, divergence=0.35, zeroP=0.5, maxGenerations=np.inf, maxNochange=np.inf, timeout=np.inf,
+    def CHC(dataset, population=False, populationSize=40, d=False, divergence=0.35, zeroP=0.9, alpha=0.88, maxGenerations=np.inf, maxNochange=np.inf, timeout=np.inf,
             task='feature_selection', evaluation='validation', stop=np.inf, verbose=0):
         start = time.time()
         end = time.time()
 
         task = 'feature_selection'
         indSize = dataset.X_train.shape[1]
-        toolbox = EvolutionaryWrapperFeatureSelection.createToolbox(indSize, task, evaluation, dataset)
+        toolbox = EvolutionaryWrapperFeatureSelection.createToolbox(indSize, task, evaluation, dataset, 'CHC', alpha)
         if (not population):
-            population = EvolutionaryWrapperFeatureSelection.createPopulation(populationSize, indSize, zeroP)
+            if (alpha == 1):
+                population = EvolutionaryWrapperFeatureSelection.createPopulation(populationSize, indSize, False)
+            else:
+                population = EvolutionaryWrapperFeatureSelection.createPopulation(populationSize, indSize, zeroP)
 
         generationCounter = 0
         # calculate fitness tuple for each individual in the population:
@@ -119,14 +122,12 @@ class EvolutionaryWrapperFeatureSelection:
         noChange = 0
         evaulationCounter = populationSize
 
-        if (d):
-            d0 = d
-        else:
-            d0 = len(population[0])//4
+        d0 = len(population[0]) // 4
+        if (not d):
             d = d0
 
         logDF = pd.DataFrame(
-            columns=('generation', 'time', 'best_fitness', 'average_fitness', 'number_of_evaluations', 'best_solution'))
+            columns=('generation', 'time', 'best_fitness', 'average_fitness', 'number_of_evaluations', 'best_solution', 'd'))
 
         # main evolutionary loop:
         # stop if max fitness value reached the known max value
@@ -206,13 +207,13 @@ class EvolutionaryWrapperFeatureSelection:
             #print()
             end = time.time()
             row = [generationCounter, (end - start), np.round(100 * maxFitness, 2), meanFitness, evaulationCounter,
-                   population[best_index]]
+                   population[best_index], d]
             logDF.loc[len(logDF)] = row
 
         end = time.time()
         return logDF, population
 
-    def GA(dataset, populationSize=40, crossOverP=0.9, mutationP=0.1, zeroP=0.5, maxGenerations=np.inf, maxNochange=np.inf,
+    def GA(dataset, population=False, populationSize=40, crossOverP=0.9, mutationP=0.1, zeroP=0.9, alpha=0.88, maxGenerations=np.inf, maxNochange=np.inf,
             timeout=np.inf,
             task='feature_selection', evaluation='validation', stop=np.inf, verbose=0):
 
@@ -221,8 +222,12 @@ class EvolutionaryWrapperFeatureSelection:
 
         task = 'feature_selection'
         indSize = dataset.X_train.shape[1]
-        toolbox = EvolutionaryWrapperFeatureSelection.createToolbox(indSize, task, evaluation, dataset, 'GA')
-        population = EvolutionaryWrapperFeatureSelection.createPopulation(populationSize, indSize, zeroP)
+        toolbox = EvolutionaryWrapperFeatureSelection.createToolbox(indSize, task, evaluation, dataset, 'GA', alpha)
+        if (not population):
+            if (alpha == 1):
+                population = EvolutionaryWrapperFeatureSelection.createPopulation(populationSize, indSize, False)
+            else:
+                population = EvolutionaryWrapperFeatureSelection.createPopulation(populationSize, indSize, zeroP)
 
         generationCounter = 0
         # calculate fitness tuple for each individual in the population:
