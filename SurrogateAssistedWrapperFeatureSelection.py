@@ -8,7 +8,7 @@ import random
 from deap import tools
 
 class SurrogateAssistedWrapperFeatureSelection:
-    def SAGA(dataset, populationSize=40, a=16, reductionRate=0.5, step=10, d=10, zeroP=0.9, alpha=0.88,
+    def SAGA(dataset, populationSize=40, a=16, reductionRate=0.5, step=10, d=10, zeroP=0.5, alpha=0.88,
              verbose=0, qualOnly=False, timeout=np.inf, noChange=np.inf, evaluation='validation'):
 
         start = time.time()

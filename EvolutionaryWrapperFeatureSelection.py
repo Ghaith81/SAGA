@@ -91,7 +91,7 @@ class EvolutionaryWrapperFeatureSelection:
             toolbox.register("evaluate", EvolutionaryWrapperFeatureSelection.evaluate, task=task, evaluation=evaluation, dataset=dataset, alpha=alpha)
         return toolbox
 
-    def CHC(dataset, population=False, populationSize=40, d=False, divergence=0.35, zeroP=0.9, alpha=0.88, maxGenerations=np.inf, maxNochange=np.inf, timeout=np.inf,
+    def CHC(dataset, population=False, populationSize=40, d=False, divergence=0.35, zeroP=0.5, alpha=0.88, maxGenerations=np.inf, maxNochange=np.inf, timeout=np.inf,
             task='feature_selection', evaluation='validation', stop=np.inf, verbose=0):
         start = time.time()
         end = time.time()
@@ -122,7 +122,7 @@ class EvolutionaryWrapperFeatureSelection:
         noChange = 0
         evaulationCounter = populationSize
 
-        d0 = (len(population[0]) * (1-zeroP)) // 4
+        d0 = len(population[0]) // 4
         if (not d):
             d = d0
 
@@ -213,7 +213,7 @@ class EvolutionaryWrapperFeatureSelection:
         end = time.time()
         return logDF, population
 
-    def GA(dataset, population=False, populationSize=40, crossOverP=0.9, mutationP=0.1, zeroP=0.9, alpha=0.88, maxGenerations=np.inf, maxNochange=np.inf,
+    def GA(dataset, population=False, populationSize=40, crossOverP=0.9, mutationP=0.1, zeroP=0.5, alpha=0.88, maxGenerations=np.inf, maxNochange=np.inf,
             timeout=np.inf,
             task='feature_selection', evaluation='validation', stop=np.inf, verbose=0):
 
