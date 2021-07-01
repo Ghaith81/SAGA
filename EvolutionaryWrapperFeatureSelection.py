@@ -122,7 +122,7 @@ class EvolutionaryWrapperFeatureSelection:
         noChange = 0
         evaulationCounter = populationSize
 
-        d0 = len(population[0]) // 4
+        d0 = (len(population[0]) * (1-zeroP)) // 4
         if (not d):
             d = d0
 
