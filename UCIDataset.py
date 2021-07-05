@@ -46,10 +46,11 @@ class UCIDataset:
             self.divideDataset()
 
     def divideDataset(self, classifier, normalize=True, shuffle=True, all_features=True, all_instances=True,
-                      evaluate=True, partial_sample=False):
+                      evaluate=True, partial_sample=False, folds=5):
 
         # Set classifier
         self.clf = copy.copy(classifier)
+        self.folds= folds
 
         # Shuffle dataset
         if (shuffle):
@@ -132,10 +133,10 @@ class UCIDataset:
         y_pred = self.clf.predict(self.X_test[:, self.features])
         self.TestAccuracy = accuracy_score(self.y_test, y_pred)
 
-    def setCV(self, folds=5):
-        scores = cross_val_score(self.clf, self.X_train[:][:, self.features], self.y_train[:], cv=folds,
+    def setCV(self):
+        scores = cross_val_score(self.clf, self.X_train[:][:, self.features], self.y_train[:], cv=self.folds,
                                  scoring='accuracy')
-        self.CV = np.median(scores)
+        self.CV = np.mean(scores)
 
     def setTrainSet(self, selected_instances):
         self.X_train = self.X_train[selected_instances]
