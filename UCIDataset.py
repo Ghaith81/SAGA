@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 from sklearn import preprocessing
 import copy
-from sklearn.metrics import accuracy_score
+from sklearn.metrics import accuracy_score, average_precision_score, confusion_matrix, balanced_accuracy_score, roc_auc_score
 from sklearn.model_selection import cross_val_score
 
 
@@ -127,15 +127,21 @@ class UCIDataset:
 
     def setValidationAccuracy(self):
         y_pred = self.clf.predict(self.X_val[:, self.features])
-        self.ValidationAccuracy = accuracy_score(self.y_val, y_pred)
+        #print(confusion_matrix(self.y_val, y_pred))
+        self.ValidationAccuracy = balanced_accuracy_score(self.y_val, y_pred)
 
     def setTestAccuracy(self):
         y_pred = self.clf.predict(self.X_test[:, self.features])
-        self.TestAccuracy = accuracy_score(self.y_test, y_pred)
+        #print('test', confusion_matrix(self.y_test, y_pred))
+        #print(balanced_accuracy_score(self.y_test, y_pred))
+        #print(accuracy_score(self.y_test, y_pred))
+        #print(roc_auc_score(self.y_test, y_pred))
+       
+        self.TestAccuracy = balanced_accuracy_score(self.y_test, y_pred)
 
     def setCV(self):
         scores = cross_val_score(self.clf, self.X_train[:][:, self.features], self.y_train[:], cv=self.folds,
-                                 scoring='accuracy')
+                                 scoring='balanced_accuracy')
         #print(scores)
         #print(np.mean(scores))
         #print()

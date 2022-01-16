@@ -59,14 +59,18 @@ class EvolutionaryWrapperFeatureSelection:
             c.fitClassifier()
             if (evaluation == 'validation'):
                 c.setValidationAccuracy()
-                return (alpha * c.getValidationAccuracy()) - ((1 - alpha) * np.sum(selectedIndexes) / len(individual)),
+                #print(individual)
+                #print(np.sum(individual))
+                #print(np.sum(individual) / len(individual))
+                #print()
+                return (alpha * c.getValidationAccuracy()) - ((1 - alpha) * np.sum(individual) / len(individual)),
             if (evaluation == 'test'):
                 c.setTestAccuracy()
-                return (alpha * c.getTestAccuracy()) - ((1 - alpha) * np.sum(selectedIndexes) / len(individual)),
+                return (alpha * c.getTestAccuracy()) - ((1 - alpha) * np.sum(individual) / len(individual)),
 
             if (evaluation == 'cv'):
                 c.setCV()
-                return (alpha * c.getCV()) - ((1 - alpha) * np.sum(selectedIndexes) / len(individual)),
+                return (alpha * c.getCV()) - ((1 - alpha) * np.sum(individual) / len(individual)),
         else:
             return 0,
 
@@ -318,7 +322,7 @@ class EvolutionaryWrapperFeatureSelection:
                 logDF.loc[len(logDF)] = row
                 updated = False
         end = time.time()
-        return logDF, population
+        return logDF, population, d
 
     def GA(dataset, population=False, populationSize=40, crossOverP=0.9, mutationP=0.1, zeroP=0.5, alpha=0.88, maxGenerations=np.inf, maxNochange=np.inf,
             timeout=np.inf,

@@ -43,7 +43,7 @@ class SurrogateAssistedWrapperFeatureSelection:
 
         while True:
             #toolbox = EvolutionaryWrapperFeatureSelection.createToolbox(indSize, task, evaluation, partialDataset)
-            log, population = EvolutionaryWrapperFeatureSelection.CHC(partialDataset,
+            log, population, d = EvolutionaryWrapperFeatureSelection.CHC(partialDataset,
                                                                       population,
                                                                       d=d,
                                                                       alpha=alpha,
@@ -52,7 +52,7 @@ class SurrogateAssistedWrapperFeatureSelection:
                                                                       evaluation=evaluation,
                                                                       verbose=verbose,
                                                                       task=task)
-            d = log.iloc[-1]['d']
+            #d = log.iloc[-1]['d']
             generationCounter = generationCounter + step
             featureIndividual = log.iloc[-1]['best_solution']
 
@@ -92,7 +92,7 @@ class SurrogateAssistedWrapperFeatureSelection:
                     sampleSize = int(partialDataset.X_train.shape[0] / a)
                     populationSize = int(populationSize * reductionRate)
                     surrogateLevel+=1
-                    d = indSize // 4
+                    d = indSize // 2
                     onesP = (np.sum(sagaIndividual) / indSize)
                     if (sampleSize < maxAllowedSize):
                         randomSampling = random.sample(range(partialDataset.X_train.shape[0]), sampleSize)
@@ -129,7 +129,7 @@ class SurrogateAssistedWrapperFeatureSelection:
 
                         end = time.time()
                         qualTime = (end - start)
-                        log, population = EvolutionaryWrapperFeatureSelection.CHC(dataset,
+                        log, population, d = EvolutionaryWrapperFeatureSelection.CHC(dataset,
                                                                                   population,
                                                                                   populationSize=populationSize,
                                                                                   alpha=alpha,
@@ -159,7 +159,7 @@ class SurrogateAssistedWrapperFeatureSelection:
                 sampleSize = int(partialDataset.X_train.shape[0] / a)
                 populationSize = int(populationSize * reductionRate)
                 surrogateLevel += 1
-                d = indSize // 4
+                d = indSize // 2
                 onesP = (np.sum(sagaIndividual) / indSize)
                 if (sampleSize < maxAllowedSize):
                     randomSampling = random.sample(range(partialDataset.X_train.shape[0]), sampleSize)
@@ -195,7 +195,7 @@ class SurrogateAssistedWrapperFeatureSelection:
                     end = time.time()
                     qualTime = (end - start)
 
-                    log, population = EvolutionaryWrapperFeatureSelection.CHC(dataset,
+                    log, population, d = EvolutionaryWrapperFeatureSelection.CHC(dataset,
                                                                               population,
                                                                               populationSize=startingPopulationSize,
                                                                               alpha=alpha,
