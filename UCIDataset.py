@@ -46,7 +46,7 @@ class UCIDataset:
             self.divideDataset()
 
     def divideDataset(self, classifier, normalize=True, shuffle=True, all_features=True, all_instances=True,
-                      evaluate=True, partial_sample=False, folds=5):
+                      evaluate=True, partial_sample=False, folds=10):
 
         # Set classifier
         self.clf = copy.copy(classifier)
@@ -136,6 +136,9 @@ class UCIDataset:
     def setCV(self):
         scores = cross_val_score(self.clf, self.X_train[:][:, self.features], self.y_train[:], cv=self.folds,
                                  scoring='accuracy')
+        #print(scores)
+        #print(np.mean(scores))
+        #print()
         self.CV = np.mean(scores)
 
     def setTrainSet(self, selected_instances):

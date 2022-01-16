@@ -80,7 +80,7 @@ class EvolutionaryWrapperFeatureSelection:
             pop.append(deap.creator.Individual(np.random.choice([0, 1], size=(indSize,), p=[zeroP, (1 - zeroP)])))
         return list(pop)
 
-    def createToolbox(indSize, task, evaluation, dataset, alg='CHC', divergence=0.35, alpha=0.88):
+    def createToolbox(indSize, task, evaluation, dataset, alg='CHC', divergence=0.01, alpha=0.88):
         toolbox = base.Toolbox()
         if (alg == 'CHC'):
             toolbox.register("mate", EvolutionaryWrapperFeatureSelection.HUX)
@@ -329,7 +329,7 @@ class EvolutionaryWrapperFeatureSelection:
 
         task = 'feature_selection'
         indSize = dataset.X_train.shape[1]
-        toolbox = EvolutionaryWrapperFeatureSelection.createToolbox(indSize, task, evaluation, dataset, 'GA', alpha)
+        toolbox = EvolutionaryWrapperFeatureSelection.createToolbox(indSize, task, evaluation, dataset, 'GA', 1/indSize, alpha)
         if (not population):
             if (alpha == 1):
                 population = EvolutionaryWrapperFeatureSelection.createPopulation(populationSize, indSize, False)

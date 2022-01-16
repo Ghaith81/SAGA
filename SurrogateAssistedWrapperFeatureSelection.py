@@ -49,6 +49,7 @@ class SurrogateAssistedWrapperFeatureSelection:
                                                                       alpha=alpha,
                                                                       populationSize=populationSize,
                                                                       maxGenerations=step,
+                                                                      evaluation=evaluation,
                                                                       verbose=verbose,
                                                                       task=task)
             d = log.iloc[-1]['d']
@@ -134,6 +135,7 @@ class SurrogateAssistedWrapperFeatureSelection:
                                                                                   alpha=alpha,
                                                                                   maxNochange=noChange,
                                                                                   timeout=timeout-qualTime,
+                                                                                  evaluation=evaluation,
                                                                                   verbose=verbose,
                                                                                   task=task)
 
@@ -182,8 +184,8 @@ class SurrogateAssistedWrapperFeatureSelection:
                     partialDataset = copy.copy(dataset)
                     onesP = (np.sum(sagaIndividual) / indSize)
                     populationSize = 40
-                    newInd = EvolutionaryWrapperFeatureSelection.createPopulation(populationSize, indSize, 1 - onesP)
-                    population[:] = tools.selBest(sagaIndividual + newInd, populationSize)
+                    newInd = EvolutionaryWrapperFeatureSelection.createPopulation(startingPopulationSize, indSize, 1 - onesP)
+                    population[:] = tools.selBest(sagaIndividual + newInd, startingPopulationSize)
                     partialDataset = copy.copy(dataset)
                     toolbox = EvolutionaryWrapperFeatureSelection.createToolbox(indSize, task, evaluation, partialDataset)
                     if (verbose):
@@ -203,12 +205,14 @@ class SurrogateAssistedWrapperFeatureSelection:
                                                                               task=task)
 
                     break
-
+        #print(qualTime)
         for index, row in log.iterrows():
             log.at[index, 'time'] = log.loc[index, 'time'] + qualTime
             log.at[index, 'number_of_evaluations'] = log.loc[index, 'number_of_evaluations'] + numberOfEvaluations
             log.at[index, 'generation'] = log.loc[index, 'generation'] + logDF.iloc[-1]['generation']
-        log['best_fitness_original'] = log['best_fitness']
+        log['best_fitness_original'] = 100*log['best_fitness']
+        log['best_fitness'] = 100*log['best_fitness']
+
         logDF = pd.concat((logDF, log))
 
         return logDF, population
