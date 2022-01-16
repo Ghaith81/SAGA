@@ -37,8 +37,9 @@ class SurrogateAssistedWrapperFeatureSelection:
         generationCounter = 0
         maxAllowedSize = int(partialDataset.X_train.shape[0])
 
-        d = indSize//4
+        d = indSize//2
         surrogateLevel = 0
+        startingPopulationSize = populationSize
 
         while True:
             #toolbox = EvolutionaryWrapperFeatureSelection.createToolbox(indSize, task, evaluation, partialDataset)
@@ -188,13 +189,13 @@ class SurrogateAssistedWrapperFeatureSelection:
                     if (verbose):
                         print('Approximation stage is over!')
                         print('Current Approx Sample Size:', len(partialDataset.instances))
-                        print('Current Population Size:', populationSize)
+                        print('Current Population Size:', startingPopulationSize)
                     end = time.time()
                     qualTime = (end - start)
 
                     log, population = EvolutionaryWrapperFeatureSelection.CHC(dataset,
                                                                               population,
-                                                                              populationSize=populationSize,
+                                                                              populationSize=startingPopulationSize,
                                                                               alpha=alpha,
                                                                               maxNochange=noChange,
                                                                               timeout=timeout - qualTime,
