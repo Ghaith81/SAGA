@@ -288,6 +288,7 @@ class EvolutionaryWrapperFeatureSelection:
                     if (EvolutionaryWrapperFeatureSelection.hammingDistance(oldPopulation[index], population[index]) != 0):
                         differentPopulation = True
                 #print(differentPopulation)
+                #print()
                 if (not differentPopulation):
                     d -= 1
             else:
